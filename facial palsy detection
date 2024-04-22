@@ -1,0 +1,58 @@
+import numpy as np
+#import matplotlib.pyplot as plt
+#import seaborn as sns
+#import pandas as pd
+#import plotly.express as px
+#import plotly.graph_objects as go
+#from plotly.subplots import make_subplots
+#from sklearn.utils import class_weight
+#from sklearn.model_selection import train_test_split
+import tensorflow as tf
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPool2D,Flatten, Dense, Dropout, BatchNormalization, Input
+from tensorflow.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications.inception_v3 import InceptionV3
+from keras.applications.vgg16 import VGG16
+import os
+#import cv2
+import easygui
+def preprocessing_denoise(img):
+    denoise_img = cv2.medianBlur(img, 1)
+    denoise_img = cv2.cvtColor(denoise_img, cv2.COLOR_BGR2RGB)
+    return denoise_img
+    import json
+IMG_WIDTH = 224
+IMG_HEIGHT = 224
+from tensorflow.keras.models import model_from_json
+new_model = tf.keras.models.load_model('facial.keras')
+# load json and create model
+#json_file = open('model_stroke.json', 'r')
+#loaded_model_string = json_file.read()
+#json_file.close() 
+#print(loaded_model_string)
+#load_model_json=json.loads(loaded_model_string)
+#json_file.close()
+#loaded_model = model_from_json(loaded_model_string)
+# load weights into new model
+#loaded_model.load_weights("model_stroke.weights1.h5")
+new_model.summary()
+# Classify a new image
+def classify_image():
+    # Randomly select an image from the dataset
+    index = random.randint(0, len(images) - 1)
+    image = images[index]
+    label = labels[index]
+
+    # Display the image
+    plt.imshow(image)
+    plt.axis('off')
+    plt.show()
+
+    # Reshape and normalize the image
+    image = np.expand_dims(image, axis=0)
+    image = image.astype('float32') / 255.0
+
+    # Make the prediction
+    prediction = new_model.predict(image)
